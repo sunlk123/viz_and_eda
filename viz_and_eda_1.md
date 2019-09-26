@@ -221,6 +221,10 @@ weather_df %>%
 
 ![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+``` r
+## se = FALSE removes the standard errors from the plot
+```
+
 ## 2d density plot
 
 ``` r
@@ -311,3 +315,56 @@ weather_df %>%
     ## Warning: Removed 3 rows containing non-finite values (stat_density_ridges).
 
 ![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+## saving a plot
+
+``` r
+ggp_ridge_temp =
+  weather_df %>%
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges()
+
+ggsave("ggplot_temp_ridge.pdf", ggp_ridge_temp)
+```
+
+    ## Saving 7 x 5 in image
+
+    ## Picking joint bandwidth of 1.84
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density_ridges).
+
+``` r
+## ggsave(file path name to be saved into, the name of the plot you want to save)
+```
+
+## embedding plots into R markdown
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .4) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .4) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->

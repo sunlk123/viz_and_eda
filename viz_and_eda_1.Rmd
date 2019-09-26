@@ -115,6 +115,7 @@ weather_df %>%
 weather_df %>%
   ggplot(aes(x = date, y = tmax, color = name)) +
   geom_smooth(size = 2, se = FALSE)
+## se = FALSE removes the standard errors from the plot
 ```
 
 ## 2d density plot
@@ -172,4 +173,31 @@ weather_df %>%
   geom_density_ridges()
 ```
 
+## saving a plot
 
+```{r}
+ggp_ridge_temp =
+  weather_df %>%
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges()
+
+ggsave("ggplot_temp_ridge.pdf", ggp_ridge_temp)
+## ggsave(file path name to be saved into, the name of the plot you want to save)
+```
+
+
+## embedding plots into R markdown 
+
+```{r, fig.width = 6}
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .4) +
+  geom_smooth(se = FALSE)
+```
+
+```{r, fig.width = 12}
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .4) +
+  geom_smooth(se = FALSE)
+```
