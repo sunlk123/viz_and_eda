@@ -268,3 +268,46 @@ weather_df %>%
     ## Warning: Removed 3 rows containing non-finite values (stat_density).
 
 ![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+boxplot
+
+``` r
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
+## each location get its own boxplot 
+```
+
+violin plot
+
+``` r
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+ridge plots We’re looking at the density of tmax for Waterhole, Waikiki
+and Central Park.
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges()
+```
+
+    ## Picking joint bandwidth of 1.84
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density_ridges).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
