@@ -191,7 +191,7 @@ weather_df %>%
 weather_df %>%
   ggplot(aes(x = date, y = tmax, color = name)) +
   geom_point(aes(size = prcp), alpha = .5) +
-  geom_smooth(se = FALSE) +
+  geom_smooth(size = 2, se = FALSE) +
   facet_grid(~name)
 ```
 
@@ -206,3 +206,65 @@ weather_df %>%
 ``` r
 ## size = prcp -> the size of the datapoints are determined by the precipitation data
 ```
+
+## what happens when you remove geom\_point from code
+
+``` r
+weather_df %>%
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_smooth(size = 2, se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+## 2d density plot
+
+``` r
+## install.packages("hexbin")
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_hex() 
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+## More kinds of plots
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmax, fill = name)) +
+  geom_histogram() +
+  facet_grid(~name)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_bin).
+
+![](viz_and_eda_1_files/figure-gfm/univariate_plot-1.png)<!-- -->
+
+``` r
+## gives information on univariate distributio of tmax
+## color = color of bar's outline
+## fill = color of bar's fill
+## position = "dodge" "unstacks" the bars
+```
+
+density plot - conveys similar information as histograms, but the plots
+are a bit more smoothed out
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmax, fill = name)) +
+  geom_density(alpha = .3) 
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
