@@ -120,3 +120,89 @@ weather_df %>%
 ## color is map feature we're interested in and name is the variable of interest
 ## alpha blending adds transparency to plot, 0 = transparent, 1 is not at all 
 ```
+
+why do ‘aes’ positions matter?
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .4) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+## geom_smooth is often used for exploratory analysis
+```
+
+vs
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .4) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+## resulting plot has individual points and curves color-coded by the name 
+```
+
+## create facets
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .4) +
+  geom_smooth(se = FALSE) +
+  facet_grid(~name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+## facet_grid(~name) tells R you want name in the columns
+```
+
+## create plot to analyze seasonal trend
+
+``` r
+weather_df %>%
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(aes(size = prcp), alpha = .5) +
+  geom_smooth(se = FALSE) +
+  facet_grid(~name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](viz_and_eda_1_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+## size = prcp -> the size of the datapoints are determined by the precipitation data
+```

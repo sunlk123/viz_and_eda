@@ -103,8 +103,9 @@ weather_df %>%
 ```{r}
 weather_df %>%
   ggplot(aes(x = date, y = tmax, color = name)) +
-  geom_point(aes(size = prcp), alpha = .8) +
-  geom_smooth(se = FALSE) 
+  geom_point(aes(size = prcp), alpha = .5) +
+  geom_smooth(se = FALSE) +
+  facet_grid(~name)
 ## size = prcp -> the size of the datapoints are determined by the precipitation data
 ```
 
