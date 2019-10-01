@@ -242,3 +242,18 @@ weather_df %>%
   geom_point()
 ```
 
+## restructure the plot
+
+```{r}
+weather_df %>%
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temperature"
+    ) %>%
+  ggplot(aes(x = temperature, fill = observation)) +
+  geom_density(alpha = .5) +
+  facet_grid(~name) +
+  theme(legend.position = "bottom")
+```
+

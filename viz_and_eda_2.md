@@ -390,3 +390,22 @@ weather_df %>%
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+## restructure the plot
+
+``` r
+weather_df %>%
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temperature"
+    ) %>%
+  ggplot(aes(x = temperature, fill = observation)) +
+  geom_density(alpha = .5) +
+  facet_grid(~name) +
+  theme(legend.position = "bottom")
+```
+
+    ## Warning: Removed 18 rows containing non-finite values (stat_density).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
