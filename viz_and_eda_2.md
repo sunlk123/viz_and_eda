@@ -220,3 +220,39 @@ ggp_base +
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+
+answering question about where the warning messages come from
+
+``` r
+weather_df %>%
+  filter(is.na(tmin))
+```
+
+    ## # A tibble: 15 x 6
+    ##    name       id          date        prcp  tmax  tmin
+    ##    <chr>      <chr>       <date>     <dbl> <dbl> <dbl>
+    ##  1 Waikiki_HA USC00519397 2017-04-17     5  28.3    NA
+    ##  2 Waikiki_HA USC00519397 2017-05-09    NA  NA      NA
+    ##  3 Waikiki_HA USC00519397 2017-05-26    NA  NA      NA
+    ##  4 Waikiki_HA USC00519397 2017-07-19    NA  NA      NA
+    ##  5 Waikiki_HA USC00519397 2017-10-07     0  31.1    NA
+    ##  6 Waikiki_HA USC00519397 2017-10-09     0  28.9    NA
+    ##  7 Waikiki_HA USC00519397 2017-10-10    10  31.7    NA
+    ##  8 Waikiki_HA USC00519397 2017-10-12     0  31.1    NA
+    ##  9 Waikiki_HA USC00519397 2017-10-13     0  31.1    NA
+    ## 10 Waikiki_HA USC00519397 2017-10-16     5  30      NA
+    ## 11 Waikiki_HA USC00519397 2017-10-18     0  29.4    NA
+    ## 12 Waikiki_HA USC00519397 2017-10-20    13  30.6    NA
+    ## 13 Waikiki_HA USC00519397 2017-10-21     0  30      NA
+    ## 14 Waikiki_HA USC00519397 2017-10-22     0  30      NA
+    ## 15 Waikiki_HA USC00519397 2017-12-22     0  26.7    NA
+
+``` r
+# ggplot is removing those 15 data points with missing x-values because it can't plot those data points 
+```
+
+can set theme at the very beginning to ensure that the plots always look
+the same knitr::opts\_chunk$set( fig.width = 6, fig.asp = .6, out.width
+= “90%” )
+
+theme\_set(theme\_bw() + theme(legend.position = “bottom”))

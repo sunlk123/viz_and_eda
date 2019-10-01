@@ -141,3 +141,19 @@ ggp_base +
   theme(legend.position = "bottom") 
 ```
 
+answering question about where the warning messages come from 
+```{r}
+weather_df %>%
+  filter(is.na(tmin))
+# ggplot is removing those 15 data points with missing x-values because it can't plot those data points 
+```
+
+can set theme at the very beginning to ensure that the plots always look the same
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+
