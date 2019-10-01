@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(ggridges)
+library(patchwork)
 ```
 
 ## create the weather data 
@@ -156,4 +157,88 @@ knitr::opts_chunk$set(
 )
 
 theme_set(theme_bw() + theme(legend.position = "bottom"))
+
+## creating plots with more than one dataset 
+
+```{r}
+central_park =
+  weather_df %>%
+  filter(name == "CentralPark_NY")
+
+waikiki =
+  weather_df %>%
+  filter(name == "Waikiki_HA")
+
+# create scatterplot with waikiki dataset and added a line using central park dataset
+
+ggplot(data = waikiki, aes(x = date, y = tmax, color = name)) +
+  geom_point() +
+  geom_line(data = central_park)
+```
+
+(brief aside about colors)
+
+```{r}
+# can specify color in geom_point
+waikiki %>%
+  ggplot(aes(x = date, y = tmax)) +
+  geom_point(color = "blue")
+```
+
+## Multi-panel plots
+
+```{r}
+ggp_scatter =
+  weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_density = 
+  weather_df %>%
+  ggplot(aes(x = tmin)) +
+  geom_density()
+
+ggp_box = 
+  weather_df %>% 
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+
+ggp_scatter
+ggp_density
+ggp_box
+
+# shows the two plots side by side 
+ggp_scatter + (ggp_density / ggp_box)
+```
+
+## data manipulation
+
+```{r}
+weather_df %>%
+  mutate(
+    name = factor(name),
+    name = fct_relevel(name, "Waikiki_HA", "CentralPark_NY")
+  ) %>%
+  ggplot(aes(x = name, y = tmax, color = name)) +
+  geom_boxplot()
+```
+
+reorder instead of relevel
+reoder can put things in order according to a different variable, so in this example instead of by location, it will be according to tmax (Waterhole has the lowest tmax so it continues from there)
+
+```{r}
+weather_df %>%
+  mutate(
+    name = factor(name),
+    name = fct_reorder(name, tmax)
+  ) %>%
+  ggplot(aes(x = name, y = tmax, color = name)) +
+  geom_boxplot()
+```
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point()
+```
 

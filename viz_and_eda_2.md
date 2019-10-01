@@ -256,3 +256,137 @@ the same knitr::opts\_chunk$set( fig.width = 6, fig.asp = .6, out.width
 = “90%” )
 
 theme\_set(theme\_bw() + theme(legend.position = “bottom”))
+
+## creating plots with more than one dataset
+
+``` r
+central_park =
+  weather_df %>%
+  filter(name == "CentralPark_NY")
+
+waikiki =
+  weather_df %>%
+  filter(name == "Waikiki_HA")
+
+# create scatterplot with waikiki dataset and added a line using central park dataset
+
+ggplot(data = waikiki, aes(x = date, y = tmax, color = name)) +
+  geom_point() +
+  geom_line(data = central_park)
+```
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+(brief aside about colors)
+
+``` r
+# can specify color in geom_point
+waikiki %>%
+  ggplot(aes(x = date, y = tmax)) +
+  geom_point(color = "blue")
+```
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+## Multi-panel plots
+
+``` r
+ggp_scatter =
+  weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_density = 
+  weather_df %>%
+  ggplot(aes(x = tmin)) +
+  geom_density()
+
+ggp_box = 
+  weather_df %>% 
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+
+ggp_scatter
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+ggp_density
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+
+``` r
+ggp_box
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
+
+``` r
+# shows the two plots side by side 
+ggp_scatter + (ggp_density / ggp_box)
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density).
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-11-4.png)<!-- -->
+
+## data manipulation
+
+``` r
+weather_df %>%
+  mutate(
+    name = factor(name),
+    name = fct_relevel(name, "Waikiki_HA", "CentralPark_NY")
+  ) %>%
+  ggplot(aes(x = name, y = tmax, color = name)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+reorder instead of relevel reoder can put things in order according to a
+different variable, so in this example instead of by location, it will
+be according to tmax (Waterhole has the lowest tmax so it continues from
+there)
+
+``` r
+weather_df %>%
+  mutate(
+    name = factor(name),
+    name = fct_reorder(name, tmax)
+  ) %>%
+  ggplot(aes(x = name, y = tmax, color = name)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point()
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
