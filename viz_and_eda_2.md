@@ -63,3 +63,160 @@ weather_df
     ##  9 CentralPark_NY USW00094728 2017-01-09     0  -4.9  -9.9
     ## 10 CentralPark_NY USW00094728 2017-01-10     0   7.8  -6  
     ## # … with 1,085 more rows
+
+## making new plots
+
+start with an old plot
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5)
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+add labels:
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  )
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+x axis tick marks etc
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15, -5, 20),
+    labels = c("-15C", "-5C", "20C")
+  ) +
+  scale_y_continuous(
+    trans = "sqrt"
+  )
+```
+
+    ## Warning in self$trans$transform(x): NaNs produced
+
+    ## Warning: Transformation introduced infinite values in continuous y-axis
+
+    ## Warning: Removed 90 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+# can also use scale_y_sqrt instead of scale_y_continuous(trans = "sqrt")
+```
+
+## setting colors
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  ) + 
+  scale_color_hue(
+    name = "Weather Station",
+    h = c(50, 250) 
+  )
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+# name is a function to change the name of the legend
+```
+
+## viridis pacakage includes color palettes that are not built into base R
+
+``` r
+ggp_base = weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  ) + 
+  viridis::scale_color_viridis(
+    name = "Location", 
+    discrete = TRUE
+  )
+
+ggp_base
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+## themes
+
+are global things that tell you what the plot is often has to do with
+organizational things overarching themes go first and any tweaks you
+want to make go after
+
+change legend position
+
+``` r
+# legend is at the bottom 
+ggp_base + 
+  theme(legend.position = "bottom") 
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+can change background theme
+
+``` r
+# black and white theme
+ggp_base + 
+  theme_bw() +
+  theme(legend.position = "bottom") 
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+# minimum theme
+ggp_base +
+  theme_minimal() +
+  theme(legend.position = "bottom") 
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->

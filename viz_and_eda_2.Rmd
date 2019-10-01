@@ -65,5 +65,79 @@ weather_df %>%
     x = "Minimum Temp (C)",
     y = "Maximum Temp (C)",
     caption = "Data from NDAA via rnoaa pacakge"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15, -5, 20),
+    labels = c("-15C", "-5C", "20C")
+  ) +
+  scale_y_continuous(
+    trans = "sqrt"
   )
+# can also use scale_y_sqrt instead of scale_y_continuous(trans = "sqrt")
 ```
+
+## setting colors 
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  ) + 
+  scale_color_hue(
+    name = "Weather Station",
+    h = c(50, 250) 
+  )
+
+# name is a function to change the name of the legend
+```
+
+## viridis pacakage includes color palettes that are not built into base R 
+
+```{r}
+ggp_base = weather_df %>%
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum Temp (C)",
+    y = "Maximum Temp (C)",
+    caption = "Data from NDAA via rnoaa pacakge"
+  ) + 
+  viridis::scale_color_viridis(
+    name = "Location", 
+    discrete = TRUE
+  )
+
+ggp_base
+```
+
+## themes
+are global things that tell you what the plot is 
+often has to do with organizational things
+overarching themes go first and any tweaks you want to make go after
+
+change legend position 
+```{r}
+# legend is at the bottom 
+ggp_base + 
+  theme(legend.position = "bottom") 
+```
+
+can change background theme
+```{r}
+# black and white theme
+ggp_base + 
+  theme_bw() +
+  theme(legend.position = "bottom") 
+
+# minimum theme
+ggp_base +
+  theme_minimal() +
+  theme(legend.position = "bottom") 
+```
+
