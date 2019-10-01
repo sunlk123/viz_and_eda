@@ -457,3 +457,7 @@ fas_data %>%
 ```
 
 ![](viz_and_eda_2_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+``` r
+# facet on both day of treatment and outcome of interest 
+```
