@@ -42,3 +42,75 @@ weather_df %>%
   group_by(name, month)
 ```
 
+```{r}
+weather_df %>%
+  group_by(name, month) %>% 
+  summarize(n_obs = n())
+```
+
+```{r}
+weather_df %>%
+  group_by(month) %>%
+  summarize(
+    n_obs = n(),
+    n_unique = n_distinct(date))
+```
+
+```{r}
+# if you're planning to use group_by, summarize and count, can just use count
+
+weather_df %>%
+  count(name, month)
+```
+
+```{r}
+# don't ever do this
+
+weather_df %>%
+  pull(name) %>%
+  table()
+```
+
+let's make a table 
+
+```{r}
+weather_df %>%
+  count(name) %>%
+  knitr::kable()
+```
+
+## (2x2 tables)
+
+```{r}
+#case_when is useful for creating two or more categories based on an existing variable 
+
+weather_df %>%
+  filter(name != "Waikiki_HA") %>%
+  mutate(
+    cold = case_when(
+      tmax <  5 ~ "cold",
+      tmax >= 5 ~ "not cold",
+      TRUE      ~ ""
+    )
+  ) %>%
+  group_by(name, cold) %>%
+  count() %>%
+  pivot_wider(
+    names_from = cold, 
+    values_from = n
+  )
+```
+
+```{r}
+weather_df %>%
+  filter(name != "Waikiki_HA") %>%
+  mutate(
+    cold = case_when(
+      tmax <  5 ~ "cold",
+      tmax >= 5 ~ "not cold",
+      TRUE      ~ ""
+    )
+  ) %>%
+  janitor::tabyl(name, cold)
+```
+
