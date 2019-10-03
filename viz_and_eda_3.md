@@ -208,3 +208,83 @@ weather_df %>%
     ##            name cold not cold
     ##  CentralPark_NY   44      321
     ##    Waterhole_WA  172      193
+
+## general summaries
+
+``` r
+weather_df %>%
+  group_by(name) %>%
+  summarize(
+    n = n(),
+    mean_tmax = mean(tmax, na.rm = TRUE),
+    sd_tmax = sd(tmax, na.rm = TRUE),
+    median_prcp = median(prcp, na.rm = TRUE)
+  )
+```
+
+    ## # A tibble: 3 x 5
+    ##   name               n mean_tmax sd_tmax median_prcp
+    ##   <chr>          <int>     <dbl>   <dbl>       <dbl>
+    ## 1 CentralPark_NY   365     17.4     9.86           0
+    ## 2 Waikiki_HA       365     29.7     2.15           0
+    ## 3 Waterhole_WA     365      7.48    7.96           0
+
+``` r
+# mean_tmax = mean(tmax, na.rm = TRUE --> tells R to drop NAs from the mean 
+```
+
+``` r
+weather_df %>%
+  filter(is.na(tmax))
+```
+
+    ## # A tibble: 3 x 7
+    ##   name       id          date       month       prcp  tmax  tmin
+    ##   <chr>      <chr>       <date>     <date>     <dbl> <dbl> <dbl>
+    ## 1 Waikiki_HA USC00519397 2017-05-09 2017-05-01    NA    NA    NA
+    ## 2 Waikiki_HA USC00519397 2017-05-26 2017-05-01    NA    NA    NA
+    ## 3 Waikiki_HA USC00519397 2017-07-19 2017-07-01    NA    NA    NA
+
+## group by multiple variables
+
+``` r
+weather_df %>%
+  group_by(name, month) %>%
+  summarize(
+    n = n(),
+    mean_tmax = mean(tmax, na.rm = TRUE),
+    sd_tmax = sd(tmax, na.rm = TRUE),
+    median_prcp = median(prcp, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(x = month, y = mean_tmax, color = name)) +
+  geom_point() + geom_line()
+```
+
+``` r
+weather_df %>%
+  group_by(name, month) %>%
+  summarize(
+    n = n(),
+    mean_tmax = mean(tmax, na.rm = TRUE),
+  ) %>%
+  pivot_wider(
+    names_from = name, 
+    values_from = mean_tmax
+  ) %>%
+  knitr::kable(digits = 1)
+```
+
+| month      |  n | CentralPark\_NY | Waikiki\_HA | Waterhole\_WA |
+| :--------- | -: | --------------: | ----------: | ------------: |
+| 2017-01-01 | 31 |             6.0 |        27.8 |         \-1.4 |
+| 2017-02-01 | 28 |             9.3 |        27.2 |           0.0 |
+| 2017-03-01 | 31 |             8.2 |        29.1 |           1.7 |
+| 2017-04-01 | 30 |            18.3 |        29.7 |           3.9 |
+| 2017-05-01 | 31 |            20.1 |        30.1 |          10.1 |
+| 2017-06-01 | 30 |            26.3 |        31.3 |          12.9 |
+| 2017-07-01 | 31 |            28.7 |        31.8 |          16.3 |
+| 2017-08-01 | 31 |            27.2 |        32.0 |          19.6 |
+| 2017-09-01 | 30 |            25.4 |        31.7 |          14.2 |
+| 2017-10-01 | 31 |            21.8 |        30.3 |           8.3 |
+| 2017-11-01 | 30 |            12.3 |        28.4 |           1.4 |
+| 2017-12-01 | 31 |             4.5 |        26.5 |           2.2 |
